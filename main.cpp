@@ -2,7 +2,6 @@
 #include <fstream>
 using namespace std;
 
-// ===== CLASA DE BAZA =====
 class Rezervare {
 protected:
     string nume;
@@ -35,13 +34,12 @@ public:
         cout << "Nr persoane: " << nrPersoane << endl;
         cout << "Durata: " << calculeazaDurata() << " ore" << endl;
         cout << "Pret: " << calculeazaPret() << " lei\n";
-        cout << "------------------------\n";
+        cout << "   \n";
     }
 
     virtual ~Rezervare() {}
 };
 
-// ===== ZILNICA =====
 class RezervareZilnica : public Rezervare {
 public:
     RezervareZilnica(string n, string d, int nr, int dur)
@@ -58,7 +56,6 @@ public:
     }
 };
 
-// ===== EVENIMENT =====
 class RezervareEveniment : public Rezervare {
 public:
     RezervareEveniment(string n, string d, int nr, int dur)
@@ -76,7 +73,6 @@ public:
     }
 };
 
-// ===== GRUP MARE =====
 class RezervareGrup : public Rezervare {
 public:
     RezervareGrup(string n, string d, int nr, int dur)
@@ -93,7 +89,6 @@ public:
     }
 };
 
-// ===== VIP =====
 class RezervareVIP : public Rezervare {
 public:
     RezervareVIP(string n, string d, int nr, int dur)
@@ -110,13 +105,10 @@ public:
     }
 };
 
-// ===== MAIN =====
 int main() {
     Rezervare** lista = new Rezervare*[100];
     int n = 0;
-
     ifstream f("rezervari.txt");
-
     string tip, nume, data, ora;
     int nr, durata;
 
@@ -132,17 +124,13 @@ int main() {
         else if (tip == "RezervareVIP")
             lista[n++] = new RezervareVIP(nume, dataOra, nr, durata);
     }
-
     f.close();
-
     for (int i = 0; i < n; i++) {
         lista[i]->afisare();
     }
-
     for (int i = 0; i < n; i++) {
         delete lista[i];
     }
     delete[] lista;
-
     return 0;
 }
