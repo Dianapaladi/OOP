@@ -1,0 +1,92 @@
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;fstream&gt;
+using namespace std;
+class IRezervare{
+public:
+    virtual int durata()=0;
+    virtual double pret()=0;
+    virtual ~IRezervare(){}
+};
+class Rezervare: public IRezervare{
+protected:
+    string nume,data;
+    int persoane;
+public:
+    Rezervare(string n,string d,int p){
+        nume=n;
+        data=d;
+        persoane=p;
+    }
+    void afisare(){
+        cout&lt;&lt;nume&lt;&lt;&quot; &quot;
+            &lt;&lt;data&lt;&lt;&quot; &quot;
+            &lt;&lt;persoane;
+    }
+};
+class Zilnica: public Rezervare{
+public:
+    Zilnica(string n,string d,int p):Rezervare(n,d,p){}
+    int durata(){ return 2; }
+    double pret(){
+        if(persoane&lt;=2) return 50;
+        return 50+(persoane-2)*20;
+    }
+};
+class Eveniment: public Rezervare{
+public:
+    Eveniment(string n,string d,int p):Rezervare(n,d,p){}
+
+Chisinau 2026
+
+    int durata(){ return 4; }
+    double pret(){ return 200; }
+};
+class GrupMare: public Rezervare{
+public:
+    GrupMare(string n,string d,int p):Rezervare(n,d,p){}
+    int durata(){ return 3; }
+    double pret(){
+        if(persoane&lt;=20) return 500;
+        return 500+(persoane-20)*10;
+    }
+};
+class VIP: public Rezervare{
+public:
+    VIP(string n,string d,int p):Rezervare(n,d,p){}
+    int durata(){ return 5; }
+    double pret(){ return 800; }
+};
+int main(){
+    vector&lt;Rezervare*&gt; lista;
+    ifstream f(&quot;rezervari.txt&quot;);
+    if(!f){
+        cout&lt;&lt;&quot;Fisierul nu exista!&quot;;
+        return 0;
+    }
+    string tip,nume,data;
+    int persoane;
+    while(f&gt;&gt;tip&gt;&gt;nume&gt;&gt;data&gt;&gt;persoane){
+        if(tip==&quot;Zilnica&quot;)
+            lista.push_back(new Zilnica(nume,data,persoane));
+        if(tip==&quot;Eveniment&quot;)
+            lista.push_back(new Eveniment(nume,data,persoane));
+        if(tip==&quot;GrupMare&quot;)
+            lista.push_back(new GrupMare(nume,data,persoane));
+        if(tip==&quot;VIP&quot;)
+            lista.push_back(new VIP(nume,data,persoane));
+
+    }
+    for(int i=0;i&lt;lista.size();i++){
+        lista[i]-&gt;afisare();
+        cout&lt;&lt;&quot; durata=&quot;
+            &lt;&lt;lista[i]-&gt;durata();
+        cout&lt;&lt;&quot; pret=&quot;
+            &lt;&lt;lista[i]-&gt;pret()
+            &lt;&lt;&quot; lei&quot;;
+        cout&lt;&lt;endl;
+    }
+    for(int i=0;i&lt;lista.size();i++){
+        delete lista[i];
+    }
+}
